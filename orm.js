@@ -22,7 +22,7 @@ class User {
   
     select(table) {
         if (table in sampleData) {
-           this.table = table;
+            this.table = table;
             return this;
         } else {
             throw {msg: "table doesn't exist"};
@@ -60,6 +60,7 @@ class User {
                 });
             }
         })
+        
         return data;
     }
     
@@ -90,11 +91,13 @@ class User {
 
         data = data.map(el => {
             var row = {};
+
             this.columns.forEach(column => {
                 if (column in el) {
                     row[column] = el[column];
                 }
             })
+
             return row;
         })
         
@@ -128,11 +131,13 @@ class User {
 
         data = data.map(el => {
             var row = {};
+
             this.columns.forEach(column => {
                 if (column in el) {
                     row[column] = el[column];
                 }
             })
+
             return row;
         })
         
@@ -151,25 +156,25 @@ var user = new User({
 // "sampleData" based on the query and the expected result example.
 // Hint: lodash can be quite handly in dealing with this.
 user
-.select('apps')
-.attributes(['id', 'title'])
-.where({ published: true })
-.order(['title'])
-.findAll()
-.then(function (apps) {
+    .select('apps')
+    .attributes(['id', 'title'])
+    .where({ published: true })
+    .order(['title'])
+    .findAll()
+    .then(function (apps) {
         // The expected result is for the "apps" array is:
         // [ { id: 6, title: 'Et' }, { id: 1, title: 'Lorem' } ]
         console.log(apps);
     })
   
 user
-.select('organizations')
-.attributes(['name'])
-.where({ suspended: false })
-.findOne()
-.then(function (organization) {
-    // The expected result is for the "organization" object is:
-    // { id: 3, name: 'Fliplet' }
-    console.log(organization);
-  })
+    .select('organizations')
+    .attributes(['name'])
+    .where({ suspended: false })
+    .findOne()
+    .then(function (organization) {
+        // The expected result is for the "organization" object is:
+        // { id: 3, name: 'Fliplet' }
+        console.log(organization);
+    })
   
