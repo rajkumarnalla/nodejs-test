@@ -47,44 +47,47 @@ class User {
     sortData(data) {
         this.orderByColumns.forEach(column => {
             let columnType = typeof(sampleData[this.table][0][column]);
-        if (columnType == "number" || columnType == "boolean") {
-            data = data.sort((a, b) => a[column] - b[column]);
-        } else if (columnType == "string") {
-            data = data.sort((a, b) => {
-                if (a[column] < b[column]) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            });
-        }
+
+            if (columnType == "number" || columnType == "boolean") {
+                data = data.sort((a, b) => a[column] - b[column]);
+            } else if (columnType == "string") {
+                data = data.sort((a, b) => {
+                    if (a[column] < b[column]) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                });
+            }
         })
         return data;
     }
     
     findOne() {
         let data;
+
         data = sampleData[this.table]
-        .filter(el => {
-            let satisfiedConditionsCount = 0;
-            let columns = Object.keys(this.condition);
+            .filter(el => {
+                let satisfiedConditionsCount = 0;
+                let columns = Object.keys(this.condition);
 
-            columns.forEach(column => {
-                if (this.condition[column] == el[column]) {
-                    satisfiedConditionsCount += 1;
+                columns.forEach(column => {
+                    if (this.condition[column] == el[column]) {
+                        satisfiedConditionsCount += 1;
+                    }
+                })
+
+                if (satisfiedConditionsCount == columns.length) {
+                    return true;
+                } else {
+                    return false;
                 }
-            })
-
-            if (satisfiedConditionsCount == columns.length) {
-                return true;
-            } else {
-                return false;
-            }
-        });
+            });
 
         if (this.orderByColumns) {
             data = this.sortData(data);
         }
+
         data = data.map(el => {
             var row = {};
             this.columns.forEach(column => {
@@ -100,26 +103,29 @@ class User {
     
     findAll() {
         let data;
+
         data = sampleData[this.table]
-        .filter(el => {
-            let satisfiedConditionsCount = 0;
-            let columns = Object.keys(this.condition);
+            .filter(el => {
+                let satisfiedConditionsCount = 0;
+                let columns = Object.keys(this.condition);
 
-            columns.forEach(column => {
-                if (this.condition[column] == el[column]) {
-                    satisfiedConditionsCount += 1;
+                columns.forEach(column => {
+                    if (this.condition[column] == el[column]) {
+                        satisfiedConditionsCount += 1;
+                    }
+                })
+
+                if (satisfiedConditionsCount == columns.length) {
+                    return true;
+                } else {
+                    return false;
                 }
-            })
+            });
 
-            if (satisfiedConditionsCount == columns.length) {
-                return true;
-            } else {
-                return false;
-            }
-        });
         if (this.orderByColumns) {
             data = this.sortData(data);
         }
+
         data = data.map(el => {
             var row = {};
             this.columns.forEach(column => {
@@ -145,23 +151,23 @@ var user = new User({
 // "sampleData" based on the query and the expected result example.
 // Hint: lodash can be quite handly in dealing with this.
 user
-	.select('apps')
-  .attributes(['id', 'title'])
-  .where({ published: true })
-  .order(['title'])
-  .findAll()
-  .then(function (apps) {
-    // The expected result is for the "apps" array is:
-    // [ { id: 6, title: 'Et' }, { id: 1, title: 'Lorem' } ]
-    console.log(apps);
-  })
+.select('apps')
+.attributes(['id', 'title'])
+.where({ published: true })
+.order(['title'])
+.findAll()
+.then(function (apps) {
+        // The expected result is for the "apps" array is:
+        // [ { id: 6, title: 'Et' }, { id: 1, title: 'Lorem' } ]
+        console.log(apps);
+    })
   
 user
-	.select('organizations')
-  .attributes(['name'])
-  .where({ suspended: false })
-  .findOne()
-  .then(function (organization) {
+.select('organizations')
+.attributes(['name'])
+.where({ suspended: false })
+.findOne()
+.then(function (organization) {
     // The expected result is for the "organization" object is:
     // { id: 3, name: 'Fliplet' }
     console.log(organization);
